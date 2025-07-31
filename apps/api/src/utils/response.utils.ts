@@ -21,7 +21,7 @@ export const createErrorResponse = (
 });
 
 export const createNotFoundResponse = (
-  resource: string = 'Resource'
+  resource = 'Resource'
 ): ApiResponse<null> => ({
   success: false,
   error: `${resource} not found`,

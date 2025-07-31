@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Project, ProjectStatus, ProjectPriority, CreateProjectRequest, UpdateProjectRequest, ProjectFilters } from '../types/project.types';
 
 // In-memory storage for projects
-let projects: Project[] = [
+const projects: Project[] = [
   {
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'Website Redesign',
