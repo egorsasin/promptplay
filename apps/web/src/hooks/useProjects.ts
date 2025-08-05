@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Project } from '../types/types';
+import type { Project } from '@/types';
 import { mockProjects } from '@/mocks/mockProjects';
 
 export function useProjects() {

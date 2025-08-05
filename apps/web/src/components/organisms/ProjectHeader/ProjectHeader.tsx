@@ -3,11 +3,15 @@ import Text from '../../atoms/Text';
 import Badge from '../../atoms/Badge';
 import Button from '../../atoms/Button';
 import Icon from '../../atoms/Icon';
-import { Project } from '@/types/types';
+import type { Project } from '@/types';
 import {
   PROJECT_STATUS_LABELS,
   PROJECT_PRIORITY_LABELS,
-} from '@/utils/constants';
+  TEXT_VARIANTS,
+  TEXT_COLORS,
+  BUTTON_VARIANTS,
+  ICON_NAMES,
+} from '@/types';
 
 export interface ProjectHeaderProps {
   project: Project;
@@ -25,18 +29,18 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   return (
     <div className={`space-y-6 ${className}`}>
       {showBackButton && onBackClick && (
-        <Button variant="ghost" size="sm" onClick={onBackClick}>
-          <Icon name="arrow-left" size="sm" className="mr-2" />
+        <Button variant={BUTTON_VARIANTS.GHOST} size="sm" onClick={onBackClick}>
+          <Icon name={ICON_NAMES.ARROW_LEFT} size="sm" className="mr-2" />
           Back to Projects
         </Button>
       )}
 
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <Text variant="h1" color="white" className="mb-2">
+          <Text variant={TEXT_VARIANTS.H1} color={TEXT_COLORS.WHITE} className="mb-2">
             {project.name}
           </Text>
-          <Text variant="body" color="secondary" className="mb-4 text-lg">
+          <Text variant={TEXT_VARIANTS.BODY} color={TEXT_COLORS.SECONDARY} className="mb-4 text-lg">
             {project.description}
           </Text>
           <div className="flex items-center space-x-4">
@@ -50,12 +54,12 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
         </div>
 
         <div className="text-right">
-          <Text variant="caption" color="muted">
+          <Text variant={TEXT_VARIANTS.CAPTION} color={TEXT_COLORS.MUTED}>
             Client
           </Text>
           <Text
-            variant="body"
-            color="primary"
+            variant={TEXT_VARIANTS.BODY}
+            color={TEXT_COLORS.PRIMARY}
             weight="semibold"
             className="text-lg"
           >

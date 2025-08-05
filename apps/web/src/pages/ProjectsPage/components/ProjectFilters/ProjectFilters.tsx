@@ -1,18 +1,27 @@
 import React from 'react';
-import {
+import type {
   ProjectStatus,
   ProjectPriority,
-  type ProjectFilters,
-} from '@/types/types';
+  ProjectFilters,
+  SelectOption,
+} from '@/types';
 import {
   PROJECT_STATUS_LABELS,
   PROJECT_PRIORITY_LABELS,
-  SORT_OPTIONS,
-  SORT_ORDER_OPTIONS,
-} from '@/utils/constants';
+  PROJECT_SORT_LABELS,
+} from '@/types';
 import Input from '@/components/atoms/Input';
 import Select from '@/components/atoms/Select';
 import Button from '@/components/atoms/Button';
+
+const SORT_OPTIONS: SelectOption[] = Object.entries(PROJECT_SORT_LABELS).map(
+  ([value, label]) => ({ value, label })
+);
+
+const SORT_ORDER_OPTIONS: SelectOption[] = [
+  { value: 'asc', label: 'Ascending' },
+  { value: 'desc', label: 'Descending' },
+] as const;
 
 export interface FilterComponentProps {
   filters: ProjectFilters;

@@ -1,29 +1,15 @@
 import React from 'react';
+import type { TextAlign, FontWeight } from '@/types';
+import { TEXT_VARIANTS, TEXT_COLORS } from '@/types';
 
-export type TextVariant =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'body'
-  | 'caption'
-  | 'label'
-  | 'mono';
-
-export type TextColor =
-  | 'primary'
-  | 'secondary'
-  | 'muted'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'white';
+export type TextVariant = (typeof TEXT_VARIANTS)[keyof typeof TEXT_VARIANTS];
+export type TextColor = (typeof TEXT_COLORS)[keyof typeof TEXT_COLORS];
 
 export interface TextProps {
   variant?: TextVariant;
   color?: TextColor;
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold';
-  align?: 'left' | 'center' | 'right';
+  weight?: FontWeight;
+  align?: TextAlign;
   truncate?: boolean;
   className?: string;
   children: React.ReactNode;
@@ -31,24 +17,24 @@ export interface TextProps {
 }
 
 const variantClasses: Record<TextVariant, string> = {
-  h1: 'text-3xl font-bold',
-  h2: 'text-xl font-semibold',
-  h3: 'text-lg font-semibold',
-  h4: 'text-base font-semibold',
-  body: 'text-sm',
-  caption: 'text-xs',
-  label: 'text-sm font-medium',
-  mono: 'text-sm font-mono',
+  [TEXT_VARIANTS.H1]: 'text-3xl font-bold',
+  [TEXT_VARIANTS.H2]: 'text-xl font-semibold',
+  [TEXT_VARIANTS.H3]: 'text-lg font-semibold',
+  [TEXT_VARIANTS.H4]: 'text-base font-semibold',
+  [TEXT_VARIANTS.BODY]: 'text-sm',
+  [TEXT_VARIANTS.CAPTION]: 'text-xs',
+  [TEXT_VARIANTS.LABEL]: 'text-sm font-medium',
+  [TEXT_VARIANTS.MONO]: 'text-sm font-mono',
 };
 
 const colorClasses: Record<TextColor, string> = {
-  primary: 'text-emerald-400',
-  secondary: 'text-gray-300',
-  muted: 'text-gray-400',
-  success: 'text-emerald-400',
-  warning: 'text-yellow-400',
-  error: 'text-red-400',
-  white: 'text-white',
+  [TEXT_COLORS.PRIMARY]: 'text-emerald-400',
+  [TEXT_COLORS.SECONDARY]: 'text-gray-300',
+  [TEXT_COLORS.MUTED]: 'text-gray-400',
+  [TEXT_COLORS.SUCCESS]: 'text-emerald-400',
+  [TEXT_COLORS.WARNING]: 'text-yellow-400',
+  [TEXT_COLORS.ERROR]: 'text-red-400',
+  [TEXT_COLORS.WHITE]: 'text-white',
 };
 
 const weightClasses = {
@@ -65,8 +51,8 @@ const alignClasses = {
 };
 
 const Text: React.FC<TextProps> = ({
-  variant = 'body',
-  color = 'secondary',
+  variant = TEXT_VARIANTS.BODY,
+  color = TEXT_COLORS.SECONDARY,
   weight,
   align = 'left',
   truncate = false,

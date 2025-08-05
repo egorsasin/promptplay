@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { Project } from '@/types';
 import {
   PROJECT_STATUS_LABELS,
   PROJECT_PRIORITY_LABELS,
-} from '@/utils/constants';
+} from '@/types';
 import {
   formatCurrency,
   formatPercentage,
@@ -13,7 +14,6 @@ import { formatDateRange, getDaysRemaining } from '@/utils/dateUtils';
 import Card from '@/components/molecules/Card';
 import Badge from '@/components/atoms/Badge';
 import ProgressBar from '@/components/atoms/ProgressBar';
-import { Project } from '@/types/types';
 
 interface ProjectCardProps {
   project: Project;

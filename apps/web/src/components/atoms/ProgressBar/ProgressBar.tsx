@@ -1,11 +1,12 @@
 import React from 'react';
+import type { StandardSize, ColorVariant } from '@/types';
 
 export interface ProgressBarProps {
   value: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: StandardSize;
   showLabel?: boolean;
   className?: string;
-  color?: 'emerald' | 'blue' | 'red' | 'yellow';
+  color?: ColorVariant;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({

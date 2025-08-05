@@ -1,11 +1,11 @@
 import { useState, useMemo } from 'react';
-import { Project, ProjectFilters } from '../types/types';
-import { DEFAULT_FILTERS } from '../utils/constants';
+import type { Project, ProjectFilters, ProjectFilterStats } from '@/types';
+import { DEFAULT_PROJECT_FILTERS, PROJECT_STATUS } from '@/types';
 import { isDateInRange } from '../utils/dateUtils';
 import { useDebounce } from './useDebounce';
 
 export function useProjectFilters(projects: Project[]) {
-  const [filters, setFilters] = useState<ProjectFilters>(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState<ProjectFilters>(DEFAULT_PROJECT_FILTERS);
   const debouncedSearch = useDebounce(filters.search, 300);
 
   const updateFilters = (newFilters: Partial<ProjectFilters>) => {
@@ -13,7 +13,7 @@ export function useProjectFilters(projects: Project[]) {
   };
 
   const resetFilters = () => {
-    setFilters(DEFAULT_FILTERS);
+    setFilters(DEFAULT_PROJECT_FILTERS);
   };
 
   const filteredProjects = useMemo(() => {
@@ -111,15 +111,15 @@ export function useProjectFilters(projects: Project[]) {
     return filtered;
   }, [projects, debouncedSearch, filters]);
 
-  const filterStats = useMemo(() => {
+  const filterStats = useMemo((): ProjectFilterStats => {
     const total = projects.length;
     const filtered = filteredProjects.length;
-    const active = filteredProjects.filter((p) => p.status === 'active').length;
+    const active = filteredProjects.filter((p) => p.status === PROJECT_STATUS.ACTIVE).length;
     const completed = filteredProjects.filter(
-      (p) => p.status === 'completed'
+      (p) => p.status === PROJECT_STATUS.COMPLETED
     ).length;
     const onHold = filteredProjects.filter(
-      (p) => p.status === 'on-hold'
+      (p) => p.status === PROJECT_STATUS.ON_HOLD
     ).length;
 
     return {

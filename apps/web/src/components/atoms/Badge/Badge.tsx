@@ -1,16 +1,14 @@
 import React from 'react';
+import type { ProjectStatus, ProjectPriority } from '@/types';
+
+export type BadgeVariant =
+  | 'default'
+  | ProjectStatus
+  | ProjectPriority;
 
 export interface BadgeProps {
   children: React.ReactNode;
-  variant?:
-    | 'default'
-    | 'active'
-    | 'completed'
-    | 'on-hold'
-    | 'low'
-    | 'medium'
-    | 'high'
-    | 'critical';
+  variant?: BadgeVariant;
   size?: 'sm' | 'md';
   className?: string;
 }
