@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   PROJECT_STATUS_LABELS,
   PROJECT_PRIORITY_LABELS,
@@ -23,12 +24,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   className = '',
 }) => {
+  const navigate = useNavigate();
   const daysRemaining = getDaysRemaining(project.endDate);
   const isOverBudget = project.actualCost > project.budget;
   const budgetPercentage = (project.actualCost / project.budget) * 100;
 
+  const handleCardClick = () => {
+    navigate(`/projects/${project.id}`);
+  };
+
   return (
-    <Card className={`animate-fade-in ${className}`}>
+    <div
+      className={`cursor-pointer transition-transform hover:scale-[1.02] ${className}`}
+      onClick={handleCardClick}
+    >
+      <Card className="animate-fade-in">
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -152,7 +162,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
       </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 

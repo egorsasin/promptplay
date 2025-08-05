@@ -17,6 +17,49 @@ export const mockProjects: Project[] = [
     tags: ['React', 'TypeScript', 'E-commerce', 'UI/UX'],
     createdAt: '2023-12-01T00:00:00.000Z',
     updatedAt: '2024-07-01T00:00:00.000Z',
+    teamMembers: [
+      { id: '1', name: 'John Smith', role: 'Project Manager', avatar: null },
+      { id: '2', name: 'Sarah Johnson', role: 'Lead Developer', avatar: null },
+      { id: '3', name: 'Mike Chen', role: 'UI/UX Designer', avatar: null },
+      { id: '4', name: 'Emily Davis', role: 'QA Engineer', avatar: null },
+    ],
+    milestones: [
+      {
+        id: '1',
+        title: 'Project Kickoff',
+        date: '2024-01-15T00:00:00.000Z',
+        completed: true,
+        description: 'Initial project setup and team onboarding'
+      },
+      {
+        id: '2',
+        title: 'Design Phase Complete',
+        date: '2024-02-15T00:00:00.000Z',
+        completed: true,
+        description: 'UI/UX designs approved and finalized'
+      },
+      {
+        id: '3',
+        title: 'Development Phase',
+        date: '2024-04-01T00:00:00.000Z',
+        completed: true,
+        description: 'Core functionality implementation'
+      },
+      {
+        id: '4',
+        title: 'Testing & QA',
+        date: '2024-05-15T00:00:00.000Z',
+        completed: true,
+        description: 'Quality assurance and bug fixes'
+      },
+      {
+        id: '5',
+        title: 'Project Delivery',
+        date: '2024-06-30T00:00:00.000Z',
+        completed: true,
+        description: 'Final deployment and handover'
+      },
+    ],
   },
   {
     id: '2',
@@ -34,6 +77,50 @@ export const mockProjects: Project[] = [
     tags: ['React Native', 'Security', 'Banking', 'Mobile'],
     createdAt: '2024-02-15T00:00:00.000Z',
     updatedAt: '2024-07-25T00:00:00.000Z',
+    teamMembers: [
+      { id: '1', name: 'Alex Rodriguez', role: 'Technical Lead', avatar: null },
+      { id: '2', name: 'Lisa Wang', role: 'Mobile Developer', avatar: null },
+      { id: '3', name: 'David Kim', role: 'Security Specialist', avatar: null },
+      { id: '4', name: 'Rachel Green', role: 'Product Manager', avatar: null },
+      { id: '5', name: 'Tom Wilson', role: 'DevOps Engineer', avatar: null },
+    ],
+    milestones: [
+      {
+        id: '1',
+        title: 'Project Kickoff',
+        date: '2024-03-01T00:00:00.000Z',
+        completed: true,
+        description: 'Initial project setup and security requirements gathering'
+      },
+      {
+        id: '2',
+        title: 'Security Architecture',
+        date: '2024-03-15T00:00:00.000Z',
+        completed: true,
+        description: 'Security framework and authentication system design'
+      },
+      {
+        id: '3',
+        title: 'Core Banking Features',
+        date: '2024-05-01T00:00:00.000Z',
+        completed: true,
+        description: 'Account management and transaction features'
+      },
+      {
+        id: '4',
+        title: 'Biometric Integration',
+        date: '2024-06-15T00:00:00.000Z',
+        completed: false,
+        description: 'Fingerprint and face recognition implementation'
+      },
+      {
+        id: '5',
+        title: 'Security Testing',
+        date: '2024-07-30T00:00:00.000Z',
+        completed: false,
+        description: 'Comprehensive security audit and penetration testing'
+      },
+    ],
   },
   {
     id: '3',

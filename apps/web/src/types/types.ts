@@ -11,6 +11,21 @@ export enum ProjectPriority {
   CRITICAL = 'critical',
 }
 
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  avatar?: string | null;
+}
+
+export interface ProjectMilestone {
+  id: string;
+  title: string;
+  date: string;
+  completed: boolean;
+  description?: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -26,6 +41,8 @@ export interface Project {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  teamMembers?: TeamMember[];
+  milestones?: ProjectMilestone[];
 }
 
 export interface DateRange {

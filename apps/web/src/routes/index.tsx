@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import ProjectsPage from '../pages/ProjectsPage';
+import ProjectDetailsPage from '../pages/ProjectDetailsPage';
 import MainLayout from '@/layouts/MainLayout';
 import HomePage from '@/pages/HomePage';
 
@@ -9,6 +10,7 @@ export function AppRouter() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:id" element={<ProjectDetailsPage />} />
         <Route
           path="*"
           element={
