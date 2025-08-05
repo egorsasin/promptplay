@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '@/components/Button';
+import Button from '@/components/atoms/Button';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-gradient-dark">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center space-y-8">
-          {/* Greeting */}
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl font-bold text-white">
               Welcome to{' '}
@@ -33,7 +32,6 @@ const HomePage: React.FC = () => {
             </p>
           </div>
 
-          {/* Description */}
           <div className="bg-gradient-card border border-dark-600 rounded-xl p-8 space-y-6 max-w-3xl mx-auto">
             <div className="w-16 h-16 mx-auto bg-emerald-500/20 rounded-full flex items-center justify-center">
               <svg
@@ -71,7 +69,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
             <Button
               variant="primary"
@@ -118,7 +115,6 @@ const HomePage: React.FC = () => {
             </Button>
           </div>
 
-          {/* Additional Info */}
           <div className="pt-12 border-t border-dark-600">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="space-y-2">

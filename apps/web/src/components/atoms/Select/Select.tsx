@@ -61,7 +61,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ))}
           </select>
 
-          {/* Custom dropdown arrow */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
             <svg
               className="w-4 h-4 text-gray-400"
