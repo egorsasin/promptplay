@@ -6,4 +6,4 @@
 
 # Code Quality Rules
 
-- Use Tailwind CSS classes instead of inline style objects for new markup
+    - Use Tailwind CSS classes instead of inline style objects for new markup
