@@ -5,7 +5,7 @@ import { createSuccessResponse, createErrorResponse, createNotFoundResponse } fr
 
 export class ProjectController {
   // GET /api/projects - Get all projects with optional filtering
-  static getAllProjects(req: Request, res: Response) {
+  static async getAllProjects(req: Request, res: Response): Promise<void> {
     try {
       const filters: ProjectFilters = {};
 
@@ -34,85 +34,97 @@ export class ProjectController {
         filters.priority = req.query.priority as ProjectPriority;
       }
 
-      const projects = ProjectModel.getAllProjects(filters);
+      const projects = await ProjectModel.getAllProjects(filters);
       
       res.json(createSuccessResponse(projects, `Found ${projects.length} projects`));
     } catch (error) {
       console.error('Error fetching projects:', error);
-      res.status(500).json(createErrorResponse('Internal server error'));
+      res.status(500).json(createErrorResponse('Failed to fetch projects'));
     }
   }
 
   // GET /api/projects/:id - Get project by ID
-  static getProjectById(req: Request, res: Response) {
+  static async getProjectById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const project = ProjectModel.getProjectById(id);
+      const project = await ProjectModel.getProjectById(id);
 
       if (!project) {
-        return res.status(404).json(createNotFoundResponse('Project'));
+        res.status(404).json(createNotFoundResponse('Project'));
+        return;
       }
 
       res.json(createSuccessResponse(project));
     } catch (error) {
       console.error('Error fetching project:', error);
-      res.status(500).json(createErrorResponse('Internal server error'));
+      res.status(500).json(createErrorResponse('Failed to fetch project'));
     }
   }
 
   // POST /api/projects - Create new project
-  static createProject(req: Request, res: Response) {
+  static async createProject(req: Request, res: Response): Promise<void> {
     try {
       const projectData: CreateProjectRequest = req.body;
-      const newProject = ProjectModel.createProject(projectData);
+      
+      // Basic validation
+      if (!projectData.name || !projectData.description || !projectData.startDate ||
+          !projectData.endDate || projectData.cost === undefined ||
+          !projectData.status || !projectData.priority) {
+        res.status(400).json(createErrorResponse('Missing required fields'));
+        return;
+      }
+
+      const newProject = await ProjectModel.createProject(projectData);
 
       res.status(201).json(createSuccessResponse(newProject, 'Project created successfully'));
     } catch (error) {
       console.error('Error creating project:', error);
-      res.status(500).json(createErrorResponse('Internal server error'));
+      res.status(500).json(createErrorResponse('Failed to create project'));
     }
   }
 
   // PUT /api/projects/:id - Update existing project
-  static updateProject(req: Request, res: Response) {
+  static async updateProject(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
       const updateData: UpdateProjectRequest = req.body;
 
-      const updatedProject = ProjectModel.updateProject(id, updateData);
+      const updatedProject = await ProjectModel.updateProject(id, updateData);
 
       if (!updatedProject) {
-        return res.status(404).json(createNotFoundResponse('Project'));
+        res.status(404).json(createNotFoundResponse('Project'));
+        return;
       }
 
       res.json(createSuccessResponse(updatedProject, 'Project updated successfully'));
     } catch (error) {
       console.error('Error updating project:', error);
-      res.status(500).json(createErrorResponse('Internal server error'));
+      res.status(500).json(createErrorResponse('Failed to update project'));
     }
   }
 
   // DELETE /api/projects/:id - Delete project
-  static deleteProject(req: Request, res: Response) {
+  static async deleteProject(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const deleted = ProjectModel.deleteProject(id);
+      const deleted = await ProjectModel.deleteProject(id);
 
       if (!deleted) {
-        return res.status(404).json(createNotFoundResponse('Project'));
+        res.status(404).json(createNotFoundResponse('Project'));
+        return;
       }
 
       res.json(createSuccessResponse(null, 'Project deleted successfully'));
     } catch (error) {
       console.error('Error deleting project:', error);
-      res.status(500).json(createErrorResponse('Internal server error'));
+      res.status(500).json(createErrorResponse('Failed to delete project'));
     }
   }
 
   // GET /api/projects/stats - Get project statistics
-  static getProjectStats(req: Request, res: Response) {
+  static async getProjectStats(req: Request, res: Response): Promise<void> {
     try {
-      const allProjects = ProjectModel.getAllProjects();
+      const allProjects = await ProjectModel.getAllProjects();
       
       const stats = {
         total: allProjects.length,
@@ -135,7 +147,7 @@ export class ProjectController {
       res.json(createSuccessResponse(stats, 'Project statistics retrieved successfully'));
     } catch (error) {
       console.error('Error fetching project stats:', error);
-      res.status(500).json(createErrorResponse('Internal server error'));
+      res.status(500).json(createErrorResponse('Failed to fetch project statistics'));
     }
   }
 }
