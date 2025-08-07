@@ -6,7 +6,7 @@ import { Resource } from './Resource';
 @Entity()
 export class Allocation {
   @PrimaryKey()
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => Project)
   project!: Rel<Project>;
@@ -17,21 +17,40 @@ export class Allocation {
   @Property({ type: 'decimal' })
   percentage!: number;
 
-  @Property()
-  startDate!: Date;
+  @Property({ type: 'date' })
+  startDate!: string;
 
-  @Property({ nullable: true })
-  endDate?: Date;
+  @Property({ type: 'date', nullable: true })
+  endDate?: string;
 
   @Property({ type: 'decimal' })
   cost!: number;
 
-  constructor(project: any, resource: any, percentage: number, startDate: Date, cost: number, endDate?: Date) {
+  @Property({ type: 'datetime' })
+  createdAt!: string;
+
+  @Property({ type: 'datetime' })
+  updatedAt!: string;
+
+  constructor(
+    id: string,
+    project: Rel<Project>,
+    resource: Rel<Resource>,
+    percentage: number,
+    startDate: string,
+    cost: number,
+    createdAt: string,
+    updatedAt: string,
+    endDate?: string
+  ) {
+    this.id = id;
     this.project = project;
     this.resource = resource;
     this.percentage = percentage;
     this.startDate = startDate;
     this.cost = cost;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
     this.endDate = endDate;
   }
 }

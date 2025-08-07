@@ -1,161 +1,157 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Project as ProjectEntity } from '../entities/Project';
 import { Project, ProjectStatus, ProjectPriority, CreateProjectRequest, UpdateProjectRequest, ProjectFilters } from '../types/project.types';
-
-// In-memory storage for projects
-const projects: Project[] = [
-  {
-    id: '550e8400-e29b-41d4-a716-446655440000',
-    name: 'Website Redesign',
-    description: 'Complete redesign of company website with modern UI/UX',
-    startDate: '2024-02-01',
-    endDate: '2024-04-30',
-    cost: 15000,
-    status: ProjectStatus.ACTIVE,
-    priority: ProjectPriority.HIGH,
-    createdAt: '2024-01-15T10:00:00.000Z',
-    updatedAt: '2024-01-15T10:00:00.000Z',
-  },
-  {
-    id: '550e8400-e29b-41d4-a716-446655440001',
-    name: 'Mobile App Development',
-    description: 'Native mobile application for iOS and Android platforms',
-    startDate: '2024-03-15',
-    endDate: '2024-08-15',
-    cost: 45000,
-    status: ProjectStatus.ACTIVE,
-    priority: ProjectPriority.CRITICAL,
-    createdAt: '2024-01-20T14:30:00.000Z',
-    updatedAt: '2024-01-25T09:15:00.000Z',
-  },
-  {
-    id: '550e8400-e29b-41d4-a716-446655440002',
-    name: 'Database Migration',
-    description: 'Migrate legacy database to modern cloud infrastructure',
-    startDate: '2024-01-10',
-    endDate: '2024-02-28',
-    cost: 8500,
-    status: ProjectStatus.COMPLETED,
-    priority: ProjectPriority.MEDIUM,
-    createdAt: '2024-01-05T08:00:00.000Z',
-    updatedAt: '2024-02-28T16:45:00.000Z',
-  },
-  {
-    id: '550e8400-e29b-41d4-a716-446655440003',
-    name: 'Marketing Campaign',
-    description: 'Q2 digital marketing campaign across multiple channels',
-    startDate: '2024-04-01',
-    endDate: '2024-06-30',
-    cost: 12000,
-    status: ProjectStatus.ON_HOLD,
-    priority: ProjectPriority.LOW,
-    createdAt: '2024-01-30T11:20:00.000Z',
-    updatedAt: '2024-01-30T11:20:00.000Z',
-  },
-  {
-    id: '550e8400-e29b-41d4-a716-446655440004',
-    name: 'Security Audit',
-    description: 'Comprehensive security assessment and vulnerability testing',
-    startDate: '2024-05-01',
-    endDate: '2024-05-31',
-    cost: 7500,
-    status: ProjectStatus.INACTIVE,
-    priority: ProjectPriority.HIGH,
-    createdAt: '2024-02-01T13:10:00.000Z',
-    updatedAt: '2024-02-01T13:10:00.000Z',
-  },
-];
+import { getEM, withTransaction } from '../utils/database.utils';
+import { EntityManager } from '@mikro-orm/sqlite';
 
 export class ProjectModel {
-  static getAllProjects(filters?: ProjectFilters): Project[] {
-    let filteredProjects = [...projects];
+  static async getAllProjects(filters?: ProjectFilters): Promise<Project[]> {
+    try {
+      const em = getEM();
+      const qb = em.createQueryBuilder(ProjectEntity, 'p');
 
-    if (filters) {
-      if (filters.startDate) {
-        filteredProjects = filteredProjects.filter(
-          project => project.startDate >= filters.startDate!
-        );
+      // Apply filters
+      if (filters) {
+        if (filters.startDate) {
+          qb.andWhere('p.startDate >= ?', [filters.startDate]);
+        }
+
+        if (filters.endDate) {
+          qb.andWhere('p.endDate <= ?', [filters.endDate]);
+        }
+
+        if (filters.minCost !== undefined) {
+          qb.andWhere('p.cost >= ?', [filters.minCost]);
+        }
+
+        if (filters.maxCost !== undefined) {
+          qb.andWhere('p.cost <= ?', [filters.maxCost]);
+        }
+
+        if (filters.status) {
+          qb.andWhere('p.status = ?', [filters.status]);
+        }
+
+        if (filters.priority) {
+          qb.andWhere('p.priority = ?', [filters.priority]);
+        }
       }
 
-      if (filters.endDate) {
-        filteredProjects = filteredProjects.filter(
-          project => project.endDate <= filters.endDate!
-        );
-      }
-
-      if (filters.minCost !== undefined) {
-        filteredProjects = filteredProjects.filter(
-          project => project.cost >= filters.minCost!
-        );
-      }
-
-      if (filters.maxCost !== undefined) {
-        filteredProjects = filteredProjects.filter(
-          project => project.cost <= filters.maxCost!
-        );
-      }
-
-      if (filters.status) {
-        filteredProjects = filteredProjects.filter(
-          project => project.status === filters.status
-        );
-      }
-
-      if (filters.priority) {
-        filteredProjects = filteredProjects.filter(
-          project => project.priority === filters.priority
-        );
-      }
+      const projects = await qb.getResult();
+      console.log(`📊 Retrieved ${projects.length} projects from database`);
+      return projects;
+    } catch (error) {
+      console.error('❌ Error fetching projects:', error);
+      throw new Error('Failed to fetch projects from database');
     }
-
-    return filteredProjects;
   }
 
-  static getProjectById(id: string): Project | undefined {
-    return projects.find(project => project.id === id);
-  }
-
-  static createProject(projectData: CreateProjectRequest): Project {
-    const now = new Date().toISOString();
-    const newProject: Project = {
-      id: uuidv4(),
-      ...projectData,
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    projects.push(newProject);
-    return newProject;
-  }
-
-  static updateProject(id: string, updateData: UpdateProjectRequest): Project | null {
-    const projectIndex = projects.findIndex(project => project.id === id);
-    
-    if (projectIndex === -1) {
-      return null;
+  static async getProjectById(id: string): Promise<Project | null> {
+    try {
+      const em = getEM();
+      const project = await em.findOne(ProjectEntity, { id });
+      
+      if (project) {
+        console.log(`📊 Retrieved project ${id} from database`);
+      }
+      
+      return project;
+    } catch (error) {
+      console.error(`❌ Error fetching project ${id}:`, error);
+      throw new Error('Failed to fetch project from database');
     }
-
-    const updatedProject: Project = {
-      ...projects[projectIndex],
-      ...updateData,
-      updatedAt: new Date().toISOString(),
-    };
-
-    projects[projectIndex] = updatedProject;
-    return updatedProject;
   }
 
-  static deleteProject(id: string): boolean {
-    const projectIndex = projects.findIndex(project => project.id === id);
-    
-    if (projectIndex === -1) {
-      return false;
+  static async createProject(projectData: CreateProjectRequest): Promise<Project> {
+    return await withTransaction(async (em: EntityManager) => {
+      try {
+        const now = new Date().toISOString();
+        const projectEntity = new ProjectEntity(
+          uuidv4(),
+          projectData.name,
+          projectData.description,
+          projectData.startDate,
+          projectData.endDate,
+          projectData.cost,
+          projectData.status,
+          projectData.priority,
+          now,
+          now
+        );
+
+        em.persist(projectEntity);
+        await em.flush();
+        
+        console.log(`✅ Created project ${projectEntity.id} in database`);
+        return projectEntity;
+      } catch (error) {
+        console.error('❌ Error creating project:', error);
+        throw new Error('Failed to create project in database');
+      }
+    });
+  }
+
+  static async updateProject(id: string, updateData: UpdateProjectRequest): Promise<Project | null> {
+    return await withTransaction(async (em: EntityManager) => {
+      try {
+        const project = await em.findOne(ProjectEntity, { id });
+        
+        if (!project) {
+          return null;
+        }
+
+        // Update fields
+        if (updateData.name !== undefined) project.name = updateData.name;
+        if (updateData.description !== undefined) project.description = updateData.description;
+        if (updateData.startDate !== undefined) project.startDate = updateData.startDate;
+        if (updateData.endDate !== undefined) project.endDate = updateData.endDate;
+        if (updateData.cost !== undefined) project.cost = updateData.cost;
+        if (updateData.status !== undefined) project.status = updateData.status;
+        if (updateData.priority !== undefined) project.priority = updateData.priority;
+        
+        project.updatedAt = new Date().toISOString();
+
+        await em.flush();
+        
+        console.log(`✅ Updated project ${id} in database`);
+        return project;
+      } catch (error) {
+        console.error(`❌ Error updating project ${id}:`, error);
+        throw new Error('Failed to update project in database');
+      }
+    });
+  }
+
+  static async deleteProject(id: string): Promise<boolean> {
+    return await withTransaction(async (em: EntityManager) => {
+      try {
+        const project = await em.findOne(ProjectEntity, { id });
+        
+        if (!project) {
+          return false;
+        }
+
+        em.remove(project);
+        await em.flush();
+        
+        console.log(`✅ Deleted project ${id} from database`);
+        return true;
+      } catch (error) {
+        console.error(`❌ Error deleting project ${id}:`, error);
+        throw new Error('Failed to delete project from database');
+      }
+    });
+  }
+
+  static async getProjectCount(): Promise<number> {
+    try {
+      const em = getEM();
+      const count = await em.count(ProjectEntity);
+      console.log(`📊 Total projects in database: ${count}`);
+      return count;
+    } catch (error) {
+      console.error('❌ Error counting projects:', error);
+      throw new Error('Failed to count projects in database');
     }
-
-    projects.splice(projectIndex, 1);
-    return true;
-  }
-
-  static getProjectCount(): number {
-    return projects.length;
   }
 }
