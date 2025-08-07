@@ -1,5 +1,5 @@
 import React from 'react';
-import { Project } from '@/data/types';
+import type { Project } from '@/types';
 import ProjectCard from '../ProjectCard';
 
 interface ProjectListProps {
@@ -19,7 +19,6 @@ const ProjectList: React.FC<ProjectListProps> = ({
         {Array.from({ length: 6 }).map((_, index) => (
           <div key={index} className="card p-6 animate-pulse">
             <div className="space-y-4">
-              {/* Header skeleton */}
               <div className="flex items-start justify-between">
                 <div className="flex-1 space-y-2">
                   <div className="h-6 bg-dark-600 rounded w-3/4"></div>
@@ -33,7 +32,6 @@ const ProjectList: React.FC<ProjectListProps> = ({
                 </div>
               </div>
 
-              {/* Progress skeleton */}
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <div className="h-4 bg-dark-600 rounded w-16"></div>
@@ -42,7 +40,6 @@ const ProjectList: React.FC<ProjectListProps> = ({
                 <div className="h-2 bg-dark-600 rounded w-full"></div>
               </div>
 
-              {/* Content skeleton */}
               <div className="space-y-3">
                 <div className="h-4 bg-dark-600 rounded w-full"></div>
                 <div className="h-4 bg-dark-600 rounded w-5/6"></div>

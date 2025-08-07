@@ -1,14 +1,27 @@
 import React from 'react';
-import { ProjectStatus, ProjectPriority, type ProjectFilters } from '@/types/types';
+import type {
+  ProjectStatus,
+  ProjectPriority,
+  ProjectFilters,
+  SelectOption,
+} from '@/types';
 import {
   PROJECT_STATUS_LABELS,
   PROJECT_PRIORITY_LABELS,
-  SORT_OPTIONS,
-  SORT_ORDER_OPTIONS,
-} from '@/utils/constants';
-import Input from '@/components/Input';
-import Select from '@/components/Select';
-import Button from '@/components/Button';
+  PROJECT_SORT_LABELS,
+} from '@/types';
+import Input from '@/components/atoms/Input';
+import Select from '@/components/atoms/Select';
+import Button from '@/components/atoms/Button';
+
+const SORT_OPTIONS: SelectOption[] = Object.entries(PROJECT_SORT_LABELS).map(
+  ([value, label]) => ({ value, label })
+);
+
+const SORT_ORDER_OPTIONS: SelectOption[] = [
+  { value: 'asc', label: 'Ascending' },
+  { value: 'desc', label: 'Descending' },
+] as const;
 
 export interface FilterComponentProps {
   filters: ProjectFilters;
@@ -97,7 +110,6 @@ const ProjectFilters: React.FC<FilterComponentProps> = ({
         )}
       </div>
 
-      {/* Search */}
       <div>
         <Input
           placeholder="Search projects, clients, or tags..."
@@ -121,7 +133,6 @@ const ProjectFilters: React.FC<FilterComponentProps> = ({
         />
       </div>
 
-      {/* Date Range */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
           label="Start Date"
@@ -137,7 +148,6 @@ const ProjectFilters: React.FC<FilterComponentProps> = ({
         />
       </div>
 
-      {/* Cost Range */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
           label="Min Budget"
@@ -155,7 +165,6 @@ const ProjectFilters: React.FC<FilterComponentProps> = ({
         />
       </div>
 
-      {/* Status Filter */}
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-3">
           Status
@@ -177,7 +186,6 @@ const ProjectFilters: React.FC<FilterComponentProps> = ({
         </div>
       </div>
 
-      {/* Priority Filter */}
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-3">
           Priority
@@ -199,7 +207,6 @@ const ProjectFilters: React.FC<FilterComponentProps> = ({
         </div>
       </div>
 
-      {/* Sort Options */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Select
           label="Sort By"
